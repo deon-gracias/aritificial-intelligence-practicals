@@ -6,19 +6,20 @@ board_entities = []
 turn = 0
 
 colors = {
-    'white': color.rgba(255, 255, 255, 20),
-    'red': color.rgba(255, 0, 0, 120),
-    'blue': color.rgba(0, 0, 255, 120),
+    'white': color.rgba(255, 255, 255, 255),
+    'red': color.rgba(255, 0, 0, 255),
+    'blue': color.rgba(0, 0, 255, 255),
 }
 
 app = Ursina()
 
 
-class Square(Entity):
+class Cube(Entity):
 
     def __init__(self, origin_x=0, origin_y=0, origin_z=0):
         super().__init__(
-            model='plane',
+            model='cube',
+            texture='white_cube',
             color=colors['white'],
             collider='box',
             origin_x=origin_x,
@@ -31,11 +32,11 @@ class Square(Entity):
     def input(self, key):
         if self.hovered:
             if key == 'left mouse down':
-                mark_square(self)
+                mark_cube(self)
                 # destroy(self)
 
 
-def mark_square(e):
+def mark_cube(e):
     if e.marked != 'none':
         return
 
@@ -51,11 +52,11 @@ def mark_square(e):
 
 
 def create_assets():
-    for i in np.linspace(-1, 2, 3):
+    for i in np.linspace(-2, 2, 3):
         board = []
-        for j in np.linspace(-1, 2, 3):
+        for j in np.linspace(-2, 2, 3):
             for k in np.linspace(-1, 2, 3):
-                e = Square(
+                e = Cube(
                     origin_y=i,
                     origin_x=j,
                     origin_z=k,
