@@ -20,7 +20,7 @@ class TicTacToe2d:
             None for i in range(9)
         ]
 
-        for i in range(100):
+        for i in range(1000):
             self.round = i
             # print(i)
             if i % 2 == 0:
@@ -45,6 +45,10 @@ class TicTacToe2d:
         print("Your Turn !!")
         ip = int(input(" choose position "))
         # for simplicity assume user is x and runs first
+        # self.board[ip] = 'x'
+        while ip in self.usedSquarePosition:
+            print("Invalid input")
+            ip = int(input(" choose position "))
         self.board[ip] = 'x'
         self.usedSquarePosition.append(ip)
         self.positionsByHuman.append(ip)
@@ -59,18 +63,31 @@ class TicTacToe2d:
                 print(self.board[i], end=' ')
         print("\n")
 
-
     def computer_input(self):
         print("Computer's turn !!")
         if self.round <= 3:
             print("thinking")
-            i = random.randint(0, 8)
-            while i in self.usedSquarePosition:
-                i = random.randint(0, 8)
+            if self.round == 3:
+                i = self.get_blocking_move()
+                if i == -404:
+                    i = self.think()
+                    #
+                    if i == -404:
+                        for i in [0,2,6,8]:
+                            if i not in self.usedSquarePosition:
+                                return i
+
+            else:
+                i = self.think()
+
+            # i = self.think()
+            # i = random.randint(0, 8)
+            # while i in self.usedSquarePosition:
+            #     i = random.randint(0, 8)
             self.board[i] = 'o'
             self.usedSquarePosition.append(i)
             self.positionsByCpu.append(i)
-        else :
+        else:
             move = self.get_winning_move()
             # TODO land here for debuggin winning move
             # print(f"here and move {move}")
@@ -84,7 +101,7 @@ class TicTacToe2d:
                 #     debugging
 
             #     otherwise block that person from winning
-            else :
+            else:
 
                 b = self.get_blocking_move()
                 # TODO land here for debuggin block move
@@ -101,8 +118,6 @@ class TicTacToe2d:
                     self.board[i] = 'o'
                     self.usedSquarePosition.append(i)
                     self.positionsByCpu.append(i)
-
-
 
         print()
         self.display_board()
@@ -148,27 +163,20 @@ class TicTacToe2d:
         return False
 
     def think(self):
-        i = random.randint(0, 8)
-        while i in self.usedSquarePosition:
-            i = random.randint(0, 8)
-        self.board[i] = 'o'
-        self.usedSquarePosition.append(i)
-        self.positionsByCpu.append(i)
-        pass
-
+        for j in range(9):
+            if self.magicSquare[j] > 6 and j not in self.usedSquarePosition:
+                return j
 
     def get_winning_move(self):
-        print("here")
+        # print("here")
         for j in self.positionsByCpu:
             for k in self.positionsByCpu:
                 if j != k:
                     for i in range(9):
                         if i not in self.usedSquarePosition:
-                            if self.magicSquare[i] + self.magicSquare[j] + self.magicSquare[k] == 15:
+                            if (self.magicSquare[i] + self.magicSquare[j] + self.magicSquare[k] == 15):
                                 return i
         return -404
-
-
 
 
 if __name__ == "__main__":
