@@ -181,4 +181,3 @@ class TicTacToe2d:
 
 if __name__ == "__main__":
     TicTacToe2d()
-    pass
