@@ -17,7 +17,7 @@ class TicTacToe2d:
 
     def __init__(self):
         self.board = [
-            None for i in range(9)
+            '_' for i in range(9)
         ]
 
         for i in range(1000):
@@ -26,7 +26,7 @@ class TicTacToe2d:
             if i % 2 == 0:
                 self.take_user_input()
                 if self.hasWon('x'):
-                    print(" you won ")
+                    print("Player Wins!!")
                     break
                 elif self.isGameOver():
                     break
@@ -34,7 +34,7 @@ class TicTacToe2d:
             else:
                 self.computer_input()
                 if self.hasWon('o'):
-                    print(" pc won ")
+                    print("Computer Wins!!")
                     break
                 elif self.isGameOver():
                     break
@@ -42,13 +42,14 @@ class TicTacToe2d:
     #     user prompt for position( 0.. 9)
 
     def take_user_input(self):
-        print("Your Turn !!")
-        ip = int(input(" choose position "))
+        print("It is your turn: ")
+        ip = int(input("Choose a position (0-8):"))
         # for simplicity assume user is x and runs first
         # self.board[ip] = 'x'
         while ip in self.usedSquarePosition:
             print("Invalid input")
-            ip = int(input(" choose position "))
+            ip = int(input("Choose a position (0-8):"))
+        
         self.board[ip] = 'x'
         self.usedSquarePosition.append(ip)
         self.positionsByHuman.append(ip)
@@ -66,7 +67,7 @@ class TicTacToe2d:
     def computer_input(self):
         print("Computer's turn !!")
         if self.round <= 3:
-            print("thinking")
+            print("Computer is thinking")
             if self.round == 3:
                 i = self.get_blocking_move()
                 if i == -404:
@@ -136,14 +137,14 @@ class TicTacToe2d:
 
     def checkWinner(self):
         if self.hasWon('x'):
-            print(" X win !!")
+            print("Player wins!!")
         elif self.hasWon('o'):
-            print(" O win !!")
+            print("Computer wins!!")
         else:
-            print(" No winner yet !!")
+            print("No winner yet !!")
 
     def isGameOver(self):
-        if None not in self.board:
+        if '_' not in self.board:
             return True
         else:
             return False
