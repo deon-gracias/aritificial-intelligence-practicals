@@ -43,19 +43,21 @@ class TicTacToe2d:
 
     def take_user_input(self):
         print("It is your turn: ")
-        ip = int(input("Choose a position (0-8):"))
+        ip = (input("Choose a position (0-8):"))
         # for simplicity assume user is x and runs first
         # self.board[ip] = 'x'
-        while ip in self.usedSquarePosition:
+        while (ip in self.usedSquarePosition) or (ip.isdigit()==False) or (int(ip)>8):
             print("Invalid input")
-            ip = int(input("Choose a position (0-8):"))
+            ip = (input("Choose a position (0-8):"))
         
+        ip = int(ip)
         self.board[ip] = 'x'
         self.usedSquarePosition.append(ip)
         self.positionsByHuman.append(ip)
         self.display_board()
 
     def display_board(self):
+        print("======")
         for i in range(9):
             if i % 3 == 0:
                 print()
@@ -63,6 +65,8 @@ class TicTacToe2d:
             else:
                 print(self.board[i], end=' ')
         print("\n")
+        print("======")
+
 
     def computer_input(self):
         print("Computer's turn !!")
