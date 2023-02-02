@@ -2,7 +2,7 @@ import random
 
 
 class TicTacToe2d:
-    # " char list containing x and o "
+    # " char list containing X and O "
     board = []
 
     magicSquare = [
@@ -25,7 +25,8 @@ class TicTacToe2d:
             # print(i)
             if i % 2 == 0:
                 self.take_user_input()
-                if self.hasWon('x'):
+                if self.hasWon('X'):
+                    print("-----Congratulations!!-----")
                     print("Player Wins!!")
                     break
                 elif self.isGameOver():
@@ -33,7 +34,8 @@ class TicTacToe2d:
 
             else:
                 self.computer_input()
-                if self.hasWon('o'):
+                if self.hasWon('O'):
+                    print("-----Better Luck Next Time-----")
                     print("Computer Wins!!")
                     break
                 elif self.isGameOver():
@@ -45,28 +47,31 @@ class TicTacToe2d:
         print("It is your turn: ")
         ip = (input("Choose a position (0-8):"))
         # for simplicity assume user is x and runs first
-        # self.board[ip] = 'x'
-        while (ip in self.usedSquarePosition) or (ip.isdigit()==False) or (int(ip)>8):
+        # self.board[ip] = 'X'
+        while (ip.isdigit()==False) or (int(ip) in self.usedSquarePosition) or (int(ip)>8):
             print("Invalid input")
             ip = (input("Choose a position (0-8):"))
         
         ip = int(ip)
-        self.board[ip] = 'x'
+        self.board[ip] = 'X'
         self.usedSquarePosition.append(ip)
         self.positionsByHuman.append(ip)
         self.display_board()
 
     def display_board(self):
-        print("======")
+        print("=========")
         for i in range(9):
             if i % 3 == 0:
                 print()
+                print("|", end=' ')
                 print(self.board[i], end=' ')
             else:
                 print(self.board[i], end=' ')
-        print("\n")
-        print("======")
-
+                if i % 3 == 2:
+                    print("|")
+                
+        # print("\n")
+        print("=========")
 
     def computer_input(self):
         print("Computer's turn !!")
@@ -89,7 +94,7 @@ class TicTacToe2d:
             # i = random.randint(0, 8)
             # while i in self.usedSquarePosition:
             #     i = random.randint(0, 8)
-            self.board[i] = 'o'
+            self.board[i] = 'O'
             self.usedSquarePosition.append(i)
             self.positionsByCpu.append(i)
         else:
@@ -100,27 +105,24 @@ class TicTacToe2d:
             # print(move)
             # win if you can
             if move != -404:
-                self.board[move] = 'o'
+                self.board[move] = 'O'
                 self.usedSquarePosition.append(move)
                 self.positionsByCpu.append(move)
-                #     debugging
 
             #     otherwise block that person from winning
             else:
 
                 b = self.get_blocking_move()
-                # TODO land here for debuggin block move
-                # print(f"here and move {b}")
-
+            
                 if b != -404:
-                    self.board[b] = 'o'
+                    self.board[b] = 'O'
                     self.usedSquarePosition.append(b)
                     self.positionsByCpu.append(b)
                 else:
                     i = random.randint(0, 8)
                     while i in self.usedSquarePosition:
                         i = random.randint(0, 8)
-                    self.board[i] = 'o'
+                    self.board[i] = 'O'
                     self.usedSquarePosition.append(i)
                     self.positionsByCpu.append(i)
 
@@ -137,16 +139,6 @@ class TicTacToe2d:
                                 return i
         return -404
 
-        pass
-
-    def checkWinner(self):
-        if self.hasWon('x'):
-            print("Player wins!!")
-        elif self.hasWon('o'):
-            print("Computer wins!!")
-        else:
-            print("No winner yet !!")
-
     def isGameOver(self):
         if '_' not in self.board:
             return True
@@ -154,10 +146,6 @@ class TicTacToe2d:
             return False
 
     def hasWon(self, player):
-        # try all combinations 123 , 124,  xyz such as x!= y != z so to get hold of different squares.
-        # then check whether triplet completely have been taken by player( x or 0)
-        #  then check whether those three points are collinear or not
-
         for i in range(9):
             for j in range(9):
                 for k in range(9):
